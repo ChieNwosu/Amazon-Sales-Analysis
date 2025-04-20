@@ -1,18 +1,31 @@
 -- Table Statement of the first 10 entries
 SELECT * FROM amazon
 LIMIT 10;
+-- This query displays the first 10 rows from the amazon table to preview the data structure and contents
 
 -- 1. What is the overall performance summary of Amazon products?
 
 SELECT
-	-- "COUNT" query to add up the total number of products
     COUNT(*) AS total_products,
+    -- Counts the total number of products in the dataset
+    
     COUNT(DISTINCT category) AS unique_categories,
+    -- Counts how many different product categories exist without duplicates
+    
     AVG(rating) AS avg_rating,
+    -- Calculates the average customer rating across all products
+    
     MIN(discounted_price) AS min_price,
+    -- Finds the lowest discounted price available
+    
     MAX(discounted_price) AS max_price,
+    -- Finds the highest discounted price available
+    
     AVG(discounted_price) AS avg_price,
+    -- Calculates the average discounted price across all products
+    
     AVG(discount_percentage) AS avg_discount
+    -- Calculates the average discount percentage across all products
 FROM 
     amazon;
 
@@ -21,66 +34,87 @@ FROM
 SELECT 
     category,
     ROUND(AVG(rating), 2) AS avg_rating
+    -- Calculates the average rating for each category and rounds to 2 decimal places
 FROM 
     amazon
 GROUP BY 
     category
+    -- Groups the results by product category
 ORDER BY 
     avg_rating DESC;
+    -- Sorts results from highest to lowest average rating
 
 -- 3. What is the distribution of products across categories?
 
 SELECT 
     category,
     COUNT(*) AS num_products
+    -- Counts how many products exist in each category
 FROM 
     amazon
 GROUP BY 
     category
+    -- Groups the results by product category
 ORDER BY 
     num_products DESC;
+    -- Sorts results to show categories with most products first
 
 -- 4. Which categories offer the highest average discounts?
 
 SELECT 
     category,
     ROUND(AVG(discount_percentage), 2) AS avg_discount_percent
+    -- Calculates the average discount percentage by category, rounded to 2 decimal places
 FROM 
     amazon
 GROUP BY 
     category
+    -- Groups the results by product category
 ORDER BY 
     avg_discount_percent DESC;
+    -- Sorts results to show categories with highest average discounts first
 
 -- 5. What is the average discounted price and rating per category?
--- (This query is to combine customer feedback and pricing across categories)
+-- (This query combines customer feedback and pricing across categories)
+
 SELECT 
     category,
     ROUND(AVG(discounted_price), 2) AS avg_discounted_price,
+    -- Calculates the average discounted price per category, rounded to 2 decimal places
+    
     ROUND(AVG(rating), 2) AS avg_rating
+    -- Calculates the average customer rating per category, rounded to 2 decimal places
 FROM 
     amazon
 GROUP BY 
     category
+    -- Groups the results by product category
 ORDER BY 
     avg_discounted_price DESC;
+    -- Sorts results from highest to lowest average discounted price
 
 -- 6. What percentage of products fall under each category?
 
 SELECT 
     category,
     COUNT(*) AS category_count,
+    -- Counts the number of products in each category
+    
     ROUND(100.0 * COUNT(*) / (SELECT COUNT(*) FROM amazon), 2) AS category_percentage
+    -- Calculates what percentage of total products each category represents
+    -- Uses a subquery to get the total count of products
 FROM 
     amazon
 GROUP BY 
     category
+    -- Groups the results by product category
 ORDER BY 
     category_percentage DESC;
-
+    -- Sorts results to show categories with highest percentage first
 
 -- 7. Identify high-value deals (products with discount > 50% and high rating).
--- This query is for useful information on targeting marketing or “Top Deal” promotions
+-- This query is useful for targeting marketing or "Top Deal" promotions
+
 SELECT 
     product_name,
     category,
@@ -91,8 +125,10 @@ FROM
     amazon
 WHERE 
     discount_percentage > 50 AND rating >= 4
+    -- Filters to only include products with more than 50% discount and rating of 4 or higher
 ORDER BY 
     discount_percentage DESC, rating DESC;
+    -- Sorts by highest discount first, then by highest rating
 
 -- 8. Which product categories have the most high-rated products (rating >= 4.5)?
 -- (This helps identify high-performing categories from a customer satisfaction perspective)
@@ -100,20 +136,22 @@ ORDER BY
 SELECT 
     category,
     COUNT(*) AS high_rated_products
+    -- Counts how many highly-rated products exist in each category
 FROM 
     amazon
 WHERE 
     rating IS NOT NULL AND rating >= 4.5
+    -- Filters to only include products with a rating of 4.5 or higher
+    -- Also ensures we don't include products with missing ratings
 GROUP BY 
     category
+    -- Groups the results by product category
 ORDER BY 
     high_rated_products DESC;
+    -- Sorts to show categories with most high-rated products first
 
 -- 9. Categorize products into pricing tiers and count how many fall into each tier
--- (Exercising the CASE query shows ability to classify data and analyze pricing strategy)
-
--- 8. Categorize products into pricing tiers and count how many fall into each tier
--- (Adjusted to better match actual price distribution in the dataset)
+-- (Uses CASE statement to classify data and analyze pricing strategy)
 
 SELECT
     CASE
@@ -122,31 +160,43 @@ SELECT
         WHEN discounted_price > 3000 THEN 'Premium'
         ELSE 'Unknown'
     END AS price_tier,
+    -- Creates pricing categories based on discounted price ranges
+    
     COUNT(*) AS product_count,
+    -- Counts how many products fall into each price tier
+    
     ROUND(AVG(rating), 2) AS avg_rating_per_tier
+    -- Calculates the average rating for each price tier
 FROM
     amazon
 WHERE
     discounted_price IS NOT NULL
+    -- Ensures we only include products with valid prices
 GROUP BY
     price_tier
+    -- Groups the results by the price tier categories we created
 ORDER BY
     product_count DESC;
+    -- Sorts to show the most common price tiers first
 
 -- 10. What is the average discount percentage for products priced above the average discounted price?
--- (Exercising a common table expression query that explores whether more expensive items tend to get better discounts)
+-- (Uses a common table expression to explore whether more expensive items tend to get better discounts)
 
 WITH avg_price_cte AS (
     SELECT AVG(discounted_price) AS avg_price
     FROM amazon
     WHERE discounted_price IS NOT NULL
+    -- This CTE (Common Table Expression) calculates the overall average price once
 )
 SELECT 
     ROUND(AVG(discount_percentage), 2) AS avg_discount_for_expensive_products
+    -- Calculates the average discount only for products above the average price
 FROM 
     amazon, avg_price_cte
+    -- Joins the main table with our CTE containing the average price
 WHERE 
     discounted_price IS NOT NULL
     AND discount_percentage IS NOT NULL
+    -- Ensures we only include products with valid prices and discounts
     AND discounted_price > avg_price_cte.avg_price;
-
+    -- Only includes products priced higher than the overall average
