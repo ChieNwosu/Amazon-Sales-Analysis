@@ -1,75 +1,100 @@
-<header>
+# Amazon Sales Data Analysis Project
 
-<!--
-  <<< Author notes: Course header >>>
-  Include a 1280×640 image, course title in sentence case, and a concise description in emphasis.
-  In your repository settings: enable template repository, add your 1280×640 social image, auto delete head branches.
-  Add your open source license, GitHub uses MIT license.
--->
+## Project Overview
+This project presents a comprehensive analysis of Amazon sales data using SQL queries and Python data science techniques. The analysis extracts actionable business insights about product performance, customer behavior, and sales patterns.
 
-# Introduction to GitHub
+## Key Business Findings
 
-_Get started using GitHub in less than an hour._
+### Product Analysis
+- **Highest Sales Product Line**: Electronic Accessories (Units Sold: 971)
+- **Highest Revenue Product Line**: Food and Beverages ($ 56144.96)
+- **Lowest Sales Product Line**: Health and Beauty (Units Sold: 854)
+- **Lowest Revenue Product Line**: Health and Beauty ($ 49193.84)
 
-</header>
+### Sales Analysis
+- **Month With Highest Revenue**: January ($ 116292.11)
+- **Month With Lowest Revenue**: February ($ 97219.58)
+- **Peak Sales Time**: Afternoon
+- **Peak Sales Day**: Saturday
 
-<!--
-  <<< Author notes: Step 1 >>>
-  Choose 3-5 steps for your course.
-  The first step is always the hardest, so pick something easy!
-  Link to docs.github.com for further explanations.
-  Encourage users to open new tabs for steps!
--->
+### Customer Analysis
+- **Most Predominant Gender**: Female
+- **Most Predominant Customer Type**: Member
+- **Highest Revenue Gender**: Female ($ 167883.26)
+- **Highest Revenue Customer Type**: Member ($ 164223.81)
+- **Most Popular Product Line (Male)**: Health and Beauty
+- **Most Popular Product Line (Female)**: Fashion Accessories
+- **Distribution Of Members Based On Gender**: Male(240) Female(261)
+- **Sales Male**: 2641 units
+- **Sales Female**: 2869 units
 
-## Step 1: Create a branch
+## Skills Demonstrated
 
-_Welcome to "Introduction to GitHub"! :wave:_
+### SQL Analysis
+- Data extraction and manipulation
+- Aggregation and grouping
+- Statistical calculations
+- Advanced filtering techniques
+- Common Table Expressions (CTEs)
+- CASE statements for data segmentation
 
-**What is GitHub?**: GitHub is a collaboration platform that uses _[Git](https://docs.github.com/get-started/quickstart/github-glossary#git)_ for versioning. GitHub is a popular place to share and contribute to [open-source](https://docs.github.com/get-started/quickstart/github-glossary#open-source) software.
-<br>:tv: [Video: What is GitHub?](https://www.youtube.com/watch?v=pBy1zgt0XPc)
+### Python Data Science
+- Data cleaning and preparation with pandas
+- Descriptive statistics and analysis
+- Data visualization with matplotlib and seaborn
+- Predictive modeling using linear regression
+- Customer segmentation and product analysis
 
-**What is a repository?**: A _[repository](https://docs.github.com/get-started/quickstart/github-glossary#repository)_ is a project containing files and folders. A repository tracks versions of files and folders. For more information, see "[About repositories](https://docs.github.com/en/repositories/creating-and-managing-repositories/about-repositories)" from GitHub Docs.
+## Educational Value of this Project
 
-**What is a branch?**: A _[branch](https://docs.github.com/en/get-started/quickstart/github-glossary#branch)_ is a parallel version of your repository. By default, your repository has one branch named `main` and it is considered to be the definitive branch. Creating additional branches allows you to copy the `main` branch of your repository and safely make any changes without disrupting the main project. Many people use branches to work on specific features without affecting any other parts of the project.
+This project serves dual purposes as both an analytical tool and an educational resource:
 
-Branches allow you to separate your work from the `main` branch. In other words, everyone's work is safe while you contribute. For more information, see "[About branches](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-branches)".
+### Comprehensive SQL Query Documentation
+Each SQL query includes detailed explanatory comments that:
+- Explain the purpose of SQL functions (COUNT, AVG, GROUP BY, etc.)
+- Connect technical implementation to business applications
+- Detail filtering logic and sorting criteria
+- Demonstrate progressive SQL complexity from basic to advanced
 
-**What is a profile README?**: A _[profile README](https://docs.github.com/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)_ is essentially an "About me" section on your GitHub profile where you can share information about yourself with the community on GitHub.com. GitHub shows your profile README at the top of your profile page. For more information, see "[Managing your profile README](https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme)".
+### Python Data Analysis Tutorial
+The Python notebook demonstrates:
+- Data preparation and cleaning techniques
+- Statistical analysis approaches
+- Visualization best practices for business insights
+- Predictive modeling fundamentals
+- Extraction of actionable business recommendations
 
-![profile-readme-example](/images/profile-readme-example.png)
+### Progressive Learning Path
+The analysis follows a structured approach that builds complexity:
+1. Basic data exploration and summary statistics
+2. Category-level analysis and comparisons
+3. Multi-dimensional analysis across variables
+4. Advanced modeling to predict business outcomes
+5. Extraction of key insights and recommendations
 
-### :keyboard: Activity: Your first branch
+## Business Recommendations
 
-1. Open a new browser tab and navigate to your newly made repository. Then, work on the steps in your second tab while you read the instructions in this tab.
-2. Navigate to the **< > Code** tab in the header menu of your repository.
+Based on the analysis, key recommendations include:
+1. Focus marketing efforts on Food and Beverages to capitalize on highest revenue
+2. Develop strategies to increase Health and Beauty sales, which currently show lowest performance
+3. Investigate January's success factors to replicate in other months, especially February
+4. Enhance afternoon and Saturday promotions to leverage peak shopping times
+5. Develop targeted marketing for Female customers who generate higher revenue
+6. Continue to expand Member program which drives higher sales than normal customers
+7. Create gender-specific promotions focusing on Health and Beauty for Males and Fashion Accessories for Females
 
-   ![code-tab](/images/code-tab.png)
+## Project Structure
+- **SQL Analysis**: SQL queries with detailed explanations for database analysis
+- **Python Analysis**: Jupyter notebook with data preparation, visualization, and modeling
+- **Results**: Key findings and business recommendations
+- **Data**: Schema definition and sample data (if applicable)
 
-3. Click on the **main** branch drop-down.
-
-   ![main-branch-dropdown](/images/main-branch-dropdown.png)
-
-4. In the field, name your branch `my-first-branch`. In this case, the name must be `my-first-branch` to trigger the course workflow.
-5. Click **Create branch: my-first-branch** to create your branch.
-
-   ![create-branch-button](/images/create-branch-button.png)
-
-   The branch will automatically switch to the one you have just created.
-   The **main** branch drop-down bar will reflect your new branch and display the new branch name.
-
-6. Wait about 20 seconds then refresh this page (the one you're following instructions from). [GitHub Actions](https://docs.github.com/en/actions) will automatically update to the next step.
-
-<footer>
-
-<!--
-  <<< Author notes: Footer >>>
-  Add a link to get support, GitHub status page, code of conduct, license link.
--->
+## Tools and Technologies Used
+- SQL (MySQL/PostgreSQL)
+- Python (pandas, numpy, matplotlib, seaborn, scikit-learn)
+- Jupyter Notebook
+- Git/GitHub
 
 ---
 
-Get help: [Post in our discussion board](https://github.com/orgs/skills/discussions/categories/introduction-to-github) &bull; [Review the GitHub status page](https://www.githubstatus.com/)
-
-&copy; 2024 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
-
-</footer>
+*This project demonstrates both technical data analysis skills and the ability to extract actionable business insights from complex datasets while serving as an educational resource for SQL and Python data analysis techniques.*
