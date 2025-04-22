@@ -7,21 +7,21 @@ This project presents a comprehensive analysis of Amazon sales data using SQL qu
 
 ### Product Analysis
 - **Highest Sales Product Line**: Electronic Accessories (Units Sold: 971)
-- **Highest Revenue Product Line**: Food and Beverages ($ 56144.96)
+- **Highest Revenue Product Line**: Food and Beverages ($ 56,144.96)
 - **Lowest Sales Product Line**: Health and Beauty (Units Sold: 854)
-- **Lowest Revenue Product Line**: Health and Beauty ($ 49193.84)
+- **Lowest Revenue Product Line**: Health and Beauty ($ 49,193.84)
 
 ### Sales Analysis
-- **Month With Highest Revenue**: January ($ 116292.11)
-- **Month With Lowest Revenue**: February ($ 97219.58)
+- **Month With Highest Revenue**: January ($ 116,292.11)
+- **Month With Lowest Revenue**: February ($ 97,219.58)
 - **Peak Sales Time**: Afternoon
 - **Peak Sales Day**: Saturday
 
 ### Customer Analysis
 - **Most Predominant Gender**: Female
 - **Most Predominant Customer Type**: Member
-- **Highest Revenue Gender**: Female ($ 167883.26)
-- **Highest Revenue Customer Type**: Member ($ 164223.81)
+- **Highest Revenue Gender**: Female ($ 167,883.26)
+- **Highest Revenue Customer Type**: Member ($ 164,223.81)
 - **Most Popular Product Line (Male)**: Health and Beauty
 - **Most Popular Product Line (Female)**: Fashion Accessories
 - **Distribution Of Members Based On Gender**: Male(240) Female(261)
@@ -62,7 +62,6 @@ The Python notebook demonstrates:
 - Statistical analysis approaches
 - Visualization best practices for business insights
 - Predictive modeling fundamentals
-- Extraction of actionable business recommendations
 
 ### Progressive Learning Path
 The analysis follows a structured approach that builds complexity:
@@ -89,12 +88,11 @@ Based on the analysis, key recommendations include:
 - **Results**: Key findings and business recommendations
 - **Data**: Schema definition and sample data (if applicable)
 
-## Tools and Technologies Used
-- SQL (MySQL/PostgreSQL)
+## Tools and Resources Used
+- SQL (Dbeaver/SQLite)
 - Python (pandas, numpy, matplotlib, seaborn, scikit-learn)
 - Jupyter Notebook
 - Git/GitHub
+- Data source: https://www.kaggle.com/datasets/karkavelrajaj/amazon-sales-dataset/data
 
 ---
-
-*This project demonstrates both technical data analysis skills and the ability to extract actionable business insights from complex datasets while serving as an educational resource for SQL and Python data analysis techniques.*
