@@ -1,7 +1,7 @@
-# Amazon Sales Data Analysis Project
+# Amazon Sales Data Analysis Case Study Project
 
 ## Project Overview
-This project presents a comprehensive analysis of Amazon sales data using SQL queries and Python data science techniques. The analysis extracts actionable business insights about product performance, customer behavior, and sales patterns.
+This project presents a comprehensive analysis of Amazon sales data using SQL queries and Python data science techniques. The analysis extracts key business insights about product performance, customer behavior, and sales patterns.
 
 ## Key Business Findings
 
@@ -28,7 +28,7 @@ This project presents a comprehensive analysis of Amazon sales data using SQL qu
 - **Sales Male**: 2641 units
 - **Sales Female**: 2869 units
 
-## Skills Demonstrated
+## Skills Exercised
 
 ### SQL Analysis
 - Data extraction and manipulation
@@ -56,7 +56,7 @@ Each SQL query includes detailed explanatory comments that:
 - Detail filtering logic and sorting criteria
 - Demonstrate progressive SQL complexity from basic to advanced
 
-### Python Data Analysis Tutorial
+### Python Data Analysis Guided Notes
 The Python notebook demonstrates:
 - Data preparation and cleaning techniques
 - Statistical analysis approaches
@@ -76,17 +76,10 @@ The analysis follows a structured approach that builds complexity:
 Based on the analysis, key recommendations include:
 1. Focus marketing efforts on Food and Beverages to capitalize on highest revenue
 2. Develop strategies to increase Health and Beauty sales, which currently show lowest performance
-3. Investigate January's success factors to replicate in other months, especially February
-4. Enhance afternoon and Saturday promotions to leverage peak shopping times
-5. Develop targeted marketing for Female customers who generate higher revenue
-6. Continue to expand Member program which drives higher sales than normal customers
-7. Create gender-specific promotions focusing on Health and Beauty for Males and Fashion Accessories for Females
-
-## Project Structure
-- **SQL Analysis**: SQL queries with detailed explanations for database analysis
-- **Python Analysis**: Jupyter notebook with data preparation, visualization, and modeling
-- **Results**: Key findings and business recommendations
-- **Data**: Schema definition and sample data (if applicable)
+3. Enhance afternoon and Saturday promotions to leverage peak shopping times
+4. Develop targeted marketing for Female customers who generate higher revenue
+5. Continue to expand Member program which drives higher sales than normal customers
+6. Create gender-specific promotions focusing on Health and Beauty for Males and Fashion Accessories for Females
 
 ## Tools and Resources Used
 - SQL (Dbeaver/SQLite)
