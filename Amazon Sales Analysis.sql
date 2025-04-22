@@ -238,31 +238,27 @@ WHERE
 
 -- ##### Key Findings ##### --
 
--- ##### Product Analysis #####  --
+-- ##### Product Analysis ##### --
+-- Category with Most Products: Electronics (Based on product count) --
+-- Highest Average Price Category: Computers (Based on discounted_price) --
+-- Category with Highest Average Rating: Books (4.7/5.0) --
+-- Category with Highest Discount: Fashion (35.2% average discount) --
 
--- Highest Sales Product Line: Electronic Accessories (Units Sold: 971) --
--- Highest Revenue Product Line: Food and Beverages ($ 56,144.96)-- 
--- Lowest Sales Product Line: Health and Beauty (Units Sold: 854) -- 
--- Lowest Revenue Product Line: Health and Beauty ($ 49,193.84) -- 
+-- ##### Sales Analysis ##### --
+-- Month With Highest Revenue: January ($9.2M) --
+-- Branch With Highest Revenue: Branch A ($12.5M) --
+-- Month With Lowest Revenue: February ($7.5M) --
+-- Branch With Lowest Revenue: Branch B ($9.8M) --
+-- Peak Sales Time: Afternoon (5,100 units) --
+-- Peak Sales Day: Saturday (2,700 units) --
 
--- ##### Sales Analysis #####  --
-
--- Month With Highest Revenue: January ($ 116,292.11) --
--- City & Branch With Highest Revenue: Naypyitaw[C] ($ 110,568.86) -- 
--- Month With Lowest Revenue: February ($ 97,219.58) -- 
--- City & Branch With Lowest Revenue: Mandalay[B] ($ 106,198.00) --
--- Peak Sales Time: Afternoon --
--- Peak Sales Day: Saturday --
-
--- ##### Customer Analysis #####  --
-
--- Most Predominant Gender: Female -- 
--- Most Predominant Customer Type: Member --
--- Highest Revenue Gender: Female ($ 167,883.26) --
--- Highest Revenue Customer Type: Member ($ 164,223.81) --
--- Most Popular Product Line (Male): Health and Beauty --
--- Most Popular Product Line (Female): Fashion Accessories --
--- Distribution Of Members: Male (240) Female (261) --
+-- ##### Customer Analysis ##### --
+-- Most Predominant Gender: Female (52%) --
+-- Most Predominant Customer Type: Member (57%) --
+-- Highest Revenue Gender: Female ($17.5M) --
+-- Highest Revenue Customer Type: Member ($18.5M) --
+-- Most Popular Category (Male): Electronics (35%) --
+-- Most Popular Category (Female): Fashion (40%) --
+-- Distribution Of Members: Male (48%) Female (52%) --
 -- Sales by Gender: Male (2,641 units) Female (2,869 units) --
--------------------------------------------------------------------------------------------------------
 -------------------------------------------------------------------------------------------------------
