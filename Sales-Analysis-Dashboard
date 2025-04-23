@@ -1,1 +1,1434 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Sales Dashboard</title>
+    <style>
+        :root {
+            --primary: #232f3e;
+            --secondary: #ff9900;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --info: #17a2b8;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .filters {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+        
+        select, button {
+            padding: 8px 12px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        
+        button {
+            background-color: var(--secondary);
+            color: var(--dark);
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #e68a00;
+        }
+        
+        button:active {
+            transform: translateY(1px);
+        }
+        
+        .dashboard-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-body {
+            padding: 15px;
+        }
+        
+        .metric {
+            text-align: center;
+            padding: 10px;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        
+        .metric-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 300px;
+            position: relative;
+        }
+        
+        .dashboard-section {
+            margin-bottom: 30px;
+        }
+        
+        .dashboard-section-title {
+            margin-bottom: 15px;
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+        }
+        
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .tab-nav {
+            display: flex;
+            background-color: #fff;
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .tab-btn {
+            padding: 12px 20px;
+            background-color: #eee;
+            border: none;
+            cursor: pointer;
+            flex-grow: 1;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .tab-btn.active {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .data-table {
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--primary);
+            border-radius: 50%;
+            border-top-color: var(--secondary);
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .filter-status {
+            margin-top: 10px;
+            padding: 8px;
+            border-radius: 4px;
+            text-align: center;
+            display: none;
+        }
+        
+        .filter-status.success {
+            background-color: rgba(40, 167, 69, 0.1);
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+        
+        .filter-status.loading {
+            background-color: rgba(255, 153, 0, 0.1);
+            color: #ff9900;
+            border: 1px solid #ff9900;
+        }
+        
+        /* Tooltip styling */
+        .chart-tooltip {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+    <div class="dashboard">
+        <header>
+            <h1>Amazon Sales Analytics Dashboard</h1>
+            <p>Interactive data visualization for Amazon product sales analysis</p>
+        </header>
+        
+        <div class="filters">
+            <h3>Filters</h3>
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label for="category-filter">Category</label>
+                    <select id="category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Fashion">Fashion</option>
+                        <option value="Home">Home & Kitchen</option>
+                        <option value="Books">Books</option>
+                        <option value="Beauty">Beauty</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="price-filter">Price Range</label>
+                    <select id="price-filter">
+                        <option value="all">All Prices</option>
+                        <option value="budget">Budget (< ₹1000)</option>
+                        <option value="standard">Standard (₹1000-₹3000)</option>
+                        <option value="premium">Premium (> ₹3000)</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="rating-filter">Rating</label>
+                    <select id="rating-filter">
+                        <option value="all">All Ratings</option>
+                        <option value="4.5+">4.5 & Above</option>
+                        <option value="4-4.5">4.0 - 4.5</option>
+                        <option value="3-4">3.0 - 4.0</option>
+                        <option value="<3">Below 3.0</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="month-filter">Month</label>
+                    <select id="month-filter">
+                        <option value="all">All Months</option>
+                        <option value="January">January</option>
+                        <option value="February">February</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filter-group">
+                <div class="filter-item">
+                    <label for="branch-filter">Branch</label>
+                    <select id="branch-filter">
+                        <option value="all">All Branches</option>
+                        <option value="A">Branch A</option>
+                        <option value="B">Branch B</option>
+                        <option value="C">Branch C</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="gender-filter">Gender</label>
+                    <select id="gender-filter">
+                        <option value="all">All Genders</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <label for="customer-type-filter">Customer Type</label>
+                    <select id="customer-type-filter">
+                        <option value="all">All Types</option>
+                        <option value="Member">Member</option>
+                        <option value="Normal">Normal</option>
+                    </select>
+                </div>
+                <div class="filter-item">
+                    <button id="apply-filters">Apply Filters</button>
+                </div>
+            </div>
+            <div class="filter-status" id="filter-status">Filters applied successfully!</div>
+        </div>
+        
+        <div class="tab-nav">
+            <button class="tab-btn active" id="product-analysis-btn">Product Analysis</button>
+            <button class="tab-btn" id="sales-analysis-btn">Sales Analysis</button>
+            <button class="tab-btn" id="customer-analysis-btn">Customer Analysis</button>
+        </div>
+        
+        <!-- Product Analysis Tab -->
+        <div id="product-analysis" class="tab-content active">
+            <div class="dashboard-section">
+                <h2 class="dashboard-section-title">Product Performance Overview</h2>
+                <div class="metrics-row">
+                    <div class="card">
+                        <div class="metric">
+                            <div class="metric-label">Total Products</div>
+                            <div class="metric-value" id="total-products">1,465</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="metric">
+                            <div class="metric-label">Categories</div>
+                            <div class="metric-value" id="total-categories">15</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="metric">
+                            <div class="metric-label">Avg. Rating</div>
+                            <div class="metric-value" id="avg-rating">4.2</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="metric">
+                            <div class="metric-label">Avg. Discount</div>
+                            <div class="metric-value" id="avg-discount">23.5%</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Category Distribution</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="categoryDistributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Average Rating by Category</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="ratingByCategoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Average Discount by Category</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="discountByCategoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Price Tier Distribution</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="priceTierChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <span>High-Value Deals (50%+ Discount & 4+ Rating)</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="data-table">
+                                <table id="highValueDealsTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Product Name</th>
+                                            <th>Category</th>
+                                            <th>Price (₹)</th>
+                                            <th>Discount</th>
+                                            <th>Rating</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Wireless Earbuds</td>
+                                            <td>Electronics</td>
+                                            <td>1,499</td>
+                                            <td>65%</td>
+                                            <td>4.7</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fitness Tracker</td>
+                                            <td>Electronics</td>
+                                            <td>1,999</td>
+                                            <td>60%</td>
+                                            <td>4.5</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kitchen Blender</td>
+                                            <td>Home & Kitchen</td>
+                                            <td>1,299</td>
+                                            <td>55%</td>
+                                            <td>4.3</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Yoga Mat</td>
+                                            <td>Sports</td>
+                                            <td>899</td>
+                                            <td>52%</td>
+                                            <td>4.8</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Desk Lamp</td>
+                                            <td>Home & Kitchen</td>
+                                            <td>699</td>
+                                            <td>50%</td>
+                                            <td>4.2</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sales Analysis Tab -->
+        <div id="sales-analysis" class="tab-content">
+            <div class="dashboard-section">
+                <h2 class="dashboard-section-title">Sales Performance Overview</h2>
+                <div class="metrics-row">
+                    <div class="card">
+                        <div class="metric">
+                            <div class="metric-label">Total Revenue</div>
+                            <div class="metric-value" id="total-revenue">₹32.5M</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="metric">
+                            <div class="metric-label">Units Sold</div>
+                            <div class="metric-value" id="units-sold">15,420</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="metric">
+                            <div class="metric-label">Avg. Order Value</div>
+                            <div class="metric-value" id="avg-order-value">₹2,106</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="metric">
+                            <div class="metric-label">Peak Sales Time</div>
+                            <div class="metric-value" id="peak-sales-time">Afternoon</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Revenue by Month</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="revenueByMonthChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Revenue by Branch</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="revenueByBranchChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Sales by Time of Day</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="salesByTimeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Sales by Day of Week</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="salesByDayChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Customer Analysis Tab -->
+        <div id="customer-analysis" class="tab-content">
+            <div class="dashboard-section">
+                <h2 class="dashboard-section-title">Customer Behavior Overview</h2>
+                <div class="metrics-row">
+                    <div class="card">
+                        <div class="metric">
+                            <div class="metric-label">Gender Distribution</div>
+                            <div class="metric-value" id="gender-distribution">F: 52% | M: 48%</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="metric">
+                            <div class="metric-label">Customer Types</div>
+                            <div class="metric-value" id="customer-types">Members: 57%</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="metric">
+                            <div class="metric-label">Highest Revenue Gender</div>
+                            <div class="metric-value" id="highest-revenue-gender">Female</div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="metric">
+                            <div class="metric-label">Member vs. Normal</div>
+                            <div class="metric-value" id="member-normal-ratio">1.3:1</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Revenue by Gender</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="revenueByGenderChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Revenue by Customer Type</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="revenueByCustomerTypeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="dashboard-content">
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Category Preference by Gender</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="categoryByGenderChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <span>Units Sold by Gender</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="chart-container">
+                                <canvas id="unitsByGenderChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script>
+        // Global chart colors
+        const chartColors = [
+            '#FF9900', '#146EB4', '#2CA469', '#D75615', '#743EBD', 
+            '#F5B041', '#3498DB', '#2ECC71', '#E74C3C', '#9B59B6'
+        ];
+        
+        // Sample Data for the Dashboard
+        const sampleData = {
+            // Product data
+            categoryDistribution: {
+                labels: ['Electronics', 'Fashion', 'Home & Kitchen', 'Books', 'Beauty', 'Others'],
+                defaultData: [25, 18, 15, 12, 10, 20],
+                filteredData: {
+                    'Electronics': [100, 0, 0, 0, 0, 0],
+                    'Fashion': [0, 100, 0, 0, 0, 0],
+                    'Home': [0, 0, 100, 0, 0, 0],
+                    'Books': [0, 0, 0, 100, 0, 0],
+                    'Beauty': [0, 0, 0, 0, 100, 0]
+                }
+            },
+            
+            ratingByCategory: {
+                labels: ['Electronics', 'Fashion', 'Home & Kitchen', 'Books', 'Beauty', 'Others'],
+                defaultData: [4.3, 4.1, 4.5, 4.7, 4.2, 3.9],
+                filteredData: {
+                    '4.5+': [4.6, 4.5, 4.7, 4.8, 4.6, 4.5],
+                    '4-4.5': [4.2, 4.3, 4.4, 4.3, 4.2, 4.1],
+                    '3-4': [3.5, 3.7, 3.8, 3.9, 3.6, 3.3],
+                    '<3': [2.5, 2.7, 2.8, 2.9, 2.4, 2.1]
+                }
+            },
+            
+            discountByCategory: {
+                labels: ['Electronics', 'Fashion', 'Home & Kitchen', 'Books', 'Beauty', 'Others'],
+                defaultData: [25.3, 35.2, 20.1, 15.7, 30.2, 22.5],
+                filteredData: {
+                    'budget': [20.5, 40.5, 15.2, 10.8, 35.5, 18.7],
+                    'standard': [28.3, 32.7, 22.5, 18.4, 28.9, 25.3],
+                    'premium': [35.6, 28.4, 26.7, 20.5, 22.8, 30.2]
+                }
+            },
+            
+            priceTier: {
+                labels: ['Budget (< ₹1000)', 'Standard (₹1000-₹3000)', 'Premium (> ₹3000)'],
+                defaultData: [45, 35, 20],
+                filteredData: {
+                    'Electronics': [25, 45, 30],
+                    'Fashion': [40, 40, 20],
+                    'Home': [35, 40, 25],
+                    'Books': [60, 30, 10],
+                    'Beauty': [55, 35, 10]
+                }
+            },
+            
+            // Sales data
+            revenueByMonth: {
+                labels: ['January', 'February', 'March', 'April'],
+                defaultData: [9.2, 7.5, 8.3, 7.5],
+                filteredData: {
+                    'A': [10.5, 8.2, 9.1, 8.7],
+                    'B': [7.8, 6.5, 7.2, 6.8],
+                    'C': [9.3, 7.9, 8.6, 7.1]
+                }
+            },
+            
+            revenueByBranch: {
+                labels: ['Branch A', 'Branch B', 'Branch C'],
+                defaultData: [12.5, 9.8, 10.2],
+                filteredData: {
+                    'January': [14.2, 10.5, 11.8],
+                    'February': [11.1, 8.7, 9.6],
+                    'March': [12.8, 10.1, 10.8],
+                    'April': [12.0, 9.8, 8.5]
+                }
+            },
+            
+            salesByTime: {
+                labels: ['Morning', 'Afternoon', 'Evening', 'Night'],
+                defaultData: [3200, 5100, 4500, 2620],
+                filteredData: {
+                    'Male': [3500, 4800, 4700, 2900],
+                    'Female': [2900, 5400, 4300, 2350],
+                    'Member': [3600, 5600, 5000, 3000],
+                    'Normal': [2800, 4600, 4000, 2250]
+                }
+            },
+            
+            salesByDay: {
+                labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+                defaultData: [1800, 2100, 2200, 2300, 2500, 2700, 1820],
+                filteredData: {
+                    'Male': [1950, 2250, 2300, 2400, 2600, 2800, 1900],
+                    'Female': [1650, 1950, 2100, 2200, 2400, 2600, 1750],
+                    'Member': [2000, 2300, 2400, 2500, 2700, 2900, 2000],
+                    'Normal': [1600, 1900, 2000, 2100, 2300, 2500, 1650]
+                }
+            },
+            
+            // Customer data
+            revenueByGender: {
+                labels: ['Female', 'Male'],
+                defaultData: [17.5, 15.0],
+                filteredData: {
+                    'Member': [19.2, 16.8],
+                    'Normal': [15.8, 13.2],
+                    'A': [18.5, 16.2],
+                    'B': [16.8, 14.3],
+                    'C': [17.2, 14.6]
+                }
+            },
+            
+            revenueByCustomerType: {
+                labels: ['Member', 'Normal'],
+                defaultData: [18.5, 14.0],
+                filteredData: {
+                    'Male': [16.8, 13.2],
+                    'Female': [20.2, 14.8],
+                    'A': [19.5, 15.2],
+                    'B': [17.8, 13.3],
+                    'C': [18.2, 13.6]
+                }
+            },
+            
+            categoryByGender: {
+                labels: ['Electronics', 'Fashion', 'Home & Kitchen', 'Books', 'Beauty', 'Others'],
+                defaultData: {
+                    'Male': [35, 20, 15, 10, 30, 18],
+                    'Female': [25, 40, 20, 15, 35, 22]
+                },
+                filteredData: {
+                    'Member': {
+                        'Male': [38, 18, 17, 12, 28, 20],
+                        'Female': [22, 42, 22, 18, 32, 25]
+                    },
+                    'Normal': {
+                        'Male': [32, 22, 13, 8, 32, 16],
+                        'Female': [28, 38, 18, 12, 38, 19]
+                    }
+                }
+            },
+            
+            unitsByGender: {
+                labels: ['Male', 'Female'],
+                defaultData: [2641, 2869],
+                filteredData: {
+                    'Member': [2985, 3215],
+                    'Normal': [2297, 2523],
+                    'A': [2805, 3025],
+                    'B': [2498, 2730],
+                    'C': [2620, 2852]
+                }
+            }
+        };
+        
+        // Chart references
+        let categoryDistributionChart;
+        let ratingByCategoryChart;
+        let discountByCategoryChart;
+        let priceTierChart;
+        let revenueByMonthChart;
+        let revenueByBranchChart;
+        let salesByTimeChart;
+        let salesByDayChart;
+        let revenueByGenderChart;
+        let revenueByCustomerTypeChart;
+        let categoryByGenderChart;
+        let unitsByGenderChart;
+        
+        // Display loading state
+        function showLoading() {
+            document.querySelector('.loading-overlay').style.display = 'flex';
+        }
+        
+        function hideLoading() {
+            document.querySelector('.loading-overlay').style.display = 'none';
+        }
+        
+        // Initialize all charts
+        function initCharts() {
+            // Product Analysis Charts
+            initCategoryDistributionChart();
+            initRatingByCategoryChart();
+            initDiscountByCategoryChart();
+            initPriceTierChart();
+            
+            // Sales Analysis Charts
+            initRevenueByMonthChart();
+            initRevenueByBranchChart();
+            initSalesByTimeChart();
+            initSalesByDayChart();
+            
+            // Customer Analysis Charts
+            initRevenueByGenderChart();
+            initRevenueByCustomerTypeChart();
+            initCategoryByGenderChart();
+            initUnitsByGenderChart();
+        }
+        
+        // Initialize Tab Navigation
+        function initTabs() {
+            document.getElementById('product-analysis-btn').addEventListener('click', function() {
+                showTab('product-analysis');
+            });
+            
+            document.getElementById('sales-analysis-btn').addEventListener('click', function() {
+                showTab('sales-analysis');
+            });
+            
+            document.getElementById('customer-analysis-btn').addEventListener('click', function() {
+                showTab('customer-analysis');
+            });
+        }
+        
+        function showTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tabId + '-btn').classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+        }
+        
+        // Initialize Filter Application
+        function initFilters() {
+            document.getElementById('apply-filters').addEventListener('click', function() {
+                applyFilters();
+            });
+        }
+        
+        function applyFilters() {
+            showLoading();
+            
+            // Get all filter values
+            const category = document.getElementById('category-filter').value;
+            const priceRange = document.getElementById('price-filter').value;
+            const rating = document.getElementById('rating-filter').value;
+            const month = document.getElementById('month-filter').value;
+            const branch = document.getElementById('branch-filter').value;
+            const gender = document.getElementById('gender-filter').value;
+            const customerType = document.getElementById('customer-type-filter').value;
+            
+            // Simulate data fetching delay
+            setTimeout(() => {
+                // Update charts based on filters
+                updateCharts(category, priceRange, rating, month, branch, gender, customerType);
+                
+                // Update summary metrics
+                updateMetrics(category, priceRange, rating, month, branch, gender, customerType);
+                
+                // Show success message
+                const statusElement = document.getElementById('filter-status');
+                statusElement.textContent = 'Filters applied successfully!';
+                statusElement.className = 'filter-status success';
+                statusElement.style.display = 'block';
+                
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    statusElement.style.display = 'none';
+                }, 3000);
+                
+                hideLoading();
+            }, 1000);
+        }
+        
+        // Update all charts based on filters
+        function updateCharts(category, priceRange, rating, month, branch, gender, customerType) {
+            // Update Product Analysis Charts
+            updateCategoryDistributionChart(category);
+            updateRatingByCategoryChart(rating);
+            updateDiscountByCategoryChart(priceRange);
+            updatePriceTierChart(category);
+            
+            // Update Sales Analysis Charts
+            updateRevenueByMonthChart(branch);
+            updateRevenueByBranchChart(month);
+            updateSalesByTimeChart(gender);
+            updateSalesByDayChart(gender);
+            
+            // Update Customer Analysis Charts
+            updateRevenueByGenderChart(customerType);
+            updateRevenueByCustomerTypeChart(gender);
+            updateCategoryByGenderChart(customerType);
+            updateUnitsByGenderChart(customerType);
+        }
+        
+        // Update summary metrics based on filters
+        function updateMetrics(category, priceRange, rating, month, branch, gender, customerType) {
+            // Just demonstrating dynamic changes to metrics based on filters
+            if (category !== 'all') {
+                document.getElementById('total-products').textContent = (Math.floor(Math.random() * 500) + 500).toLocaleString();
+                document.getElementById('avg-rating').textContent = (3.5 + Math.random()).toFixed(1);
+                document.getElementById('avg-discount').textContent = (Math.floor(Math.random() * 20) + 15) + '%';
+            } else {
+                document.getElementById('total-products').textContent = '1,465';
+                document.getElementById('avg-rating').textContent = '4.2';
+                document.getElementById('avg-discount').textContent = '23.5%';
+            }
+            
+            if (month !== 'all' || branch !== 'all') {
+                document.getElementById('total-revenue').textContent = '₹' + (Math.floor(Math.random() * 10) + 25) + '.3M';
+                document.getElementById('units-sold').textContent = (Math.floor(Math.random() * 5000) + 10000).toLocaleString();
+                document.getElementById('avg-order-value').textContent = '₹' + (Math.floor(Math.random() * 500) + 1800).toLocaleString();
+            } else {
+                document.getElementById('total-revenue').textContent = '₹32.5M';
+                document.getElementById('units-sold').textContent = '15,420';
+                document.getElementById('avg-order-value').textContent = '₹2,106';
+            }
+            
+            if (gender !== 'all' || customerType !== 'all') {
+                if (gender === 'Male') {
+                    document.getElementById('gender-distribution').textContent = 'F: 0% | M: 100%';
+                    document.getElementById('highest-revenue-gender').textContent = 'Male';
+                } else if (gender === 'Female') {
+                    document.getElementById('gender-distribution').textContent = 'F: 100% | M: 0%';
+                    document.getElementById('highest-revenue-gender').textContent = 'Female';
+                } else {
+                    document.getElementById('gender-distribution').textContent = 'F: 52% | M: 48%';
+                    document.getElementById('highest-revenue-gender').textContent = 'Female';
+                }
+                
+                if (customerType === 'Member') {
+                    document.getElementById('customer-types').textContent = 'Members: 100%';
+                    document.getElementById('member-normal-ratio').textContent = 'All Members';
+                } else if (customerType === 'Normal') {
+                    document.getElementById('customer-types').textContent = 'Normal: 100%';
+                    document.getElementById('member-normal-ratio').textContent = 'All Normal';
+                } else {
+                    document.getElementById('customer-types').textContent = 'Members: 57%';
+                    document.getElementById('member-normal-ratio').textContent = '1.3:1';
+                }
+            } else {
+                document.getElementById('gender-distribution').textContent = 'F: 52% | M: 48%';
+                document.getElementById('customer-types').textContent = 'Members: 57%';
+                document.getElementById('highest-revenue-gender').textContent = 'Female';
+                document.getElementById('member-normal-ratio').textContent = '1.3:1';
+            }
+        }
+        
+        // Product Analysis Chart Initializations & Updates
+        function initCategoryDistributionChart() {
+            const ctx = document.getElementById('categoryDistributionChart').getContext('2d');
+            categoryDistributionChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: sampleData.categoryDistribution.labels,
+                    datasets: [{
+                        data: sampleData.categoryDistribution.defaultData,
+                        backgroundColor: chartColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateCategoryDistributionChart(category) {
+            if (category !== 'all' && sampleData.categoryDistribution.filteredData[category]) {
+                categoryDistributionChart.data.datasets[0].data = sampleData.categoryDistribution.filteredData[category];
+            } else {
+                categoryDistributionChart.data.datasets[0].data = sampleData.categoryDistribution.defaultData;
+            }
+            categoryDistributionChart.update();
+        }
+        
+        function initRatingByCategoryChart() {
+            const ctx = document.getElementById('ratingByCategoryChart').getContext('2d');
+            ratingByCategoryChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sampleData.ratingByCategory.labels,
+                    datasets: [{
+                        label: 'Average Rating',
+                        data: sampleData.ratingByCategory.defaultData,
+                        backgroundColor: chartColors[0],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateRatingByCategoryChart(rating) {
+            if (rating !== 'all' && sampleData.ratingByCategory.filteredData[rating]) {
+                ratingByCategoryChart.data.datasets[0].data = sampleData.ratingByCategory.filteredData[rating];
+            } else {
+                ratingByCategoryChart.data.datasets[0].data = sampleData.ratingByCategory.defaultData;
+            }
+            ratingByCategoryChart.update();
+        }
+        
+        function initDiscountByCategoryChart() {
+            const ctx = document.getElementById('discountByCategoryChart').getContext('2d');
+            discountByCategoryChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sampleData.discountByCategory.labels,
+                    datasets: [{
+                        label: 'Average Discount %',
+                        data: sampleData.discountByCategory.defaultData,
+                        backgroundColor: chartColors[1],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateDiscountByCategoryChart(priceRange) {
+            if (priceRange !== 'all' && sampleData.discountByCategory.filteredData[priceRange]) {
+                discountByCategoryChart.data.datasets[0].data = sampleData.discountByCategory.filteredData[priceRange];
+            } else {
+                discountByCategoryChart.data.datasets[0].data = sampleData.discountByCategory.defaultData;
+            }
+            discountByCategoryChart.update();
+        }
+        
+        function initPriceTierChart() {
+            const ctx = document.getElementById('priceTierChart').getContext('2d');
+            priceTierChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: sampleData.priceTier.labels,
+                    datasets: [{
+                        data: sampleData.priceTier.defaultData,
+                        backgroundColor: [chartColors[2], chartColors[3], chartColors[4]],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updatePriceTierChart(category) {
+            if (category !== 'all' && sampleData.priceTier.filteredData[category]) {
+                priceTierChart.data.datasets[0].data = sampleData.priceTier.filteredData[category];
+            } else {
+                priceTierChart.data.datasets[0].data = sampleData.priceTier.defaultData;
+            }
+            priceTierChart.update();
+        }
+        
+        // Sales Analysis Chart Initializations & Updates
+        function initRevenueByMonthChart() {
+            const ctx = document.getElementById('revenueByMonthChart').getContext('2d');
+            revenueByMonthChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: sampleData.revenueByMonth.labels,
+                    datasets: [{
+                        label: 'Revenue (₹ Millions)',
+                        data: sampleData.revenueByMonth.defaultData,
+                        backgroundColor: 'rgba(255, 153, 0, 0.2)',
+                        borderColor: chartColors[0],
+                        borderWidth: 2,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateRevenueByMonthChart(branch) {
+            if (branch !== 'all' && sampleData.revenueByMonth.filteredData[branch]) {
+                revenueByMonthChart.data.datasets[0].data = sampleData.revenueByMonth.filteredData[branch];
+            } else {
+                revenueByMonthChart.data.datasets[0].data = sampleData.revenueByMonth.defaultData;
+            }
+            revenueByMonthChart.update();
+        }
+        
+        function initRevenueByBranchChart() {
+            const ctx = document.getElementById('revenueByBranchChart').getContext('2d');
+            revenueByBranchChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sampleData.revenueByBranch.labels,
+                    datasets: [{
+                        label: 'Revenue (₹ Millions)',
+                        data: sampleData.revenueByBranch.defaultData,
+                        backgroundColor: chartColors[1],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateRevenueByBranchChart(month) {
+            if (month !== 'all' && sampleData.revenueByBranch.filteredData[month]) {
+                revenueByBranchChart.data.datasets[0].data = sampleData.revenueByBranch.filteredData[month];
+            } else {
+                revenueByBranchChart.data.datasets[0].data = sampleData.revenueByBranch.defaultData;
+            }
+            revenueByBranchChart.update();
+        }
+        
+        function initSalesByTimeChart() {
+            const ctx = document.getElementById('salesByTimeChart').getContext('2d');
+            salesByTimeChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sampleData.salesByTime.labels,
+                    datasets: [{
+                        label: 'Units Sold',
+                        data: sampleData.salesByTime.defaultData,
+                        backgroundColor: chartColors[2],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateSalesByTimeChart(filter) {
+            if (filter !== 'all' && sampleData.salesByTime.filteredData[filter]) {
+                salesByTimeChart.data.datasets[0].data = sampleData.salesByTime.filteredData[filter];
+            } else {
+                salesByTimeChart.data.datasets[0].data = sampleData.salesByTime.defaultData;
+            }
+            salesByTimeChart.update();
+        }
+        
+        function initSalesByDayChart() {
+            const ctx = document.getElementById('salesByDayChart').getContext('2d');
+            salesByDayChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sampleData.salesByDay.labels,
+                    datasets: [{
+                        label: 'Units Sold',
+                        data: sampleData.salesByDay.defaultData,
+                        backgroundColor: chartColors[3],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateSalesByDayChart(filter) {
+            if (filter !== 'all' && sampleData.salesByDay.filteredData[filter]) {
+                salesByDayChart.data.datasets[0].data = sampleData.salesByDay.filteredData[filter];
+            } else {
+                salesByDayChart.data.datasets[0].data = sampleData.salesByDay.defaultData;
+            }
+            salesByDayChart.update();
+        }
+        
+        // Customer Analysis Chart Initializations & Updates
+        function initRevenueByGenderChart() {
+            const ctx = document.getElementById('revenueByGenderChart').getContext('2d');
+            revenueByGenderChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: sampleData.revenueByGender.labels,
+                    datasets: [{
+                        data: sampleData.revenueByGender.defaultData,
+                        backgroundColor: [chartColors[4], chartColors[5]],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateRevenueByGenderChart(filter) {
+            if (filter !== 'all' && sampleData.revenueByGender.filteredData[filter]) {
+                revenueByGenderChart.data.datasets[0].data = sampleData.revenueByGender.filteredData[filter];
+            } else {
+                revenueByGenderChart.data.datasets[0].data = sampleData.revenueByGender.defaultData;
+            }
+            revenueByGenderChart.update();
+        }
+        
+        function initRevenueByCustomerTypeChart() {
+            const ctx = document.getElementById('revenueByCustomerTypeChart').getContext('2d');
+            revenueByCustomerTypeChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: sampleData.revenueByCustomerType.labels,
+                    datasets: [{
+                        data: sampleData.revenueByCustomerType.defaultData,
+                        backgroundColor: [chartColors[6], chartColors[7]],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateRevenueByCustomerTypeChart(filter) {
+            if (filter !== 'all' && sampleData.revenueByCustomerType.filteredData[filter]) {
+                revenueByCustomerTypeChart.data.datasets[0].data = sampleData.revenueByCustomerType.filteredData[filter];
+            } else {
+                revenueByCustomerTypeChart.data.datasets[0].data = sampleData.revenueByCustomerType.defaultData;
+            }
+            revenueByCustomerTypeChart.update();
+        }
+        
+        function initCategoryByGenderChart() {
+            const ctx = document.getElementById('categoryByGenderChart').getContext('2d');
+            categoryByGenderChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sampleData.categoryByGender.labels,
+                    datasets: [
+                        {
+                            label: 'Male',
+                            data: sampleData.categoryByGender.defaultData['Male'],
+                            backgroundColor: chartColors[5],
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Female',
+                            data: sampleData.categoryByGender.defaultData['Female'],
+                            backgroundColor: chartColors[4],
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateCategoryByGenderChart(customerType) {
+            if (customerType !== 'all' && sampleData.categoryByGender.filteredData[customerType]) {
+                categoryByGenderChart.data.datasets[0].data = sampleData.categoryByGender.filteredData[customerType]['Male'];
+                categoryByGenderChart.data.datasets[1].data = sampleData.categoryByGender.filteredData[customerType]['Female'];
+            } else {
+                categoryByGenderChart.data.datasets[0].data = sampleData.categoryByGender.defaultData['Male'];
+                categoryByGenderChart.data.datasets[1].data = sampleData.categoryByGender.defaultData['Female'];
+            }
+            categoryByGenderChart.update();
+        }
+        
+        function initUnitsByGenderChart() {
+            const ctx = document.getElementById('unitsByGenderChart').getContext('2d');
+            unitsByGenderChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: sampleData.unitsByGender.labels,
+                    datasets: [{
+                        label: 'Units Sold',
+                        data: sampleData.unitsByGender.defaultData,
+                        backgroundColor: [chartColors[5], chartColors[4]],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
+        function updateUnitsByGenderChart(filter) {
+            if (filter !== 'all' && sampleData.unitsByGender.filteredData[filter]) {
+                unitsByGenderChart.data.datasets[0].data = sampleData.unitsByGender.filteredData[filter];
+            } else {
+                unitsByGenderChart.data.datasets[0].data = sampleData.unitsByGender.defaultData;
+            }
+            unitsByGenderChart.update();
+        }
+        
+        // Initialize everything when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initCharts();
+            initTabs();
+            initFilters();
+        });
+    </script>
+</body>
+</html>
