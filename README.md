@@ -1,7 +1,7 @@
 # Amazon Sales Data Analysis SQL Project
 - Interactive Dashboard: https://emerald-marjy-51.tiiny.site/
 ## Project Overview
-This project presents a comprehensive analysis of Amazon sales data using SQL queries and data wrangling techniques. The analysis extracts key business insights about product performance, customer behavior, and sales patterns.
+This project presents a comprehensive analysis of Amazon sales data using SQL queries and data wrangling techniques. The analysis extracts key business insights about product performance, customer behavior, and sales patterns. (Read: Amazon Sales Analysis.sql)
 
 ## Key Business Findings
 
