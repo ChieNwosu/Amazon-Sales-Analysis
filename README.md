@@ -38,16 +38,6 @@ This project presents a comprehensive analysis of Amazon sales data using SQL qu
 - Common Table Expressions (CTEs)
 - CASE statements for data segmentation
 
-### Python Data Science
-- Data cleaning and preparation with pandas
-- Descriptive statistics and analysis
-- Data visualization with matplotlib and seaborn
-- Predictive modeling using linear regression
-- Customer segmentation and product analysis
-
-## Educational Value of this Project
-
-This project serves dual purposes as both an analytical tool and an educational resource:
 
 ### Comprehensive SQL Query Documentation
 Each SQL query includes detailed explanatory comments that:
@@ -56,20 +46,6 @@ Each SQL query includes detailed explanatory comments that:
 - Detail filtering logic and sorting criteria
 - Demonstrate progressive SQL complexity from basic to advanced
 
-### Python Data Analysis Guided Notes
-The Python notebook demonstrates:
-- Data preparation and cleaning techniques
-- Statistical analysis approaches
-- Visualization best practices for business insights
-- Predictive modeling fundamentals
-
-### Progressive Learning Path
-The analysis follows a structured approach that builds complexity:
-1. Basic data exploration and summary statistics
-2. Category-level analysis and comparisons
-3. Multi-dimensional analysis across variables
-4. Advanced modeling to predict business outcomes
-5. Extraction of key insights and recommendations
 
 ## Business Recommendations
 
@@ -83,8 +59,6 @@ Based on the analysis, key recommendations include:
 
 ## Tools and Resources Used
 - SQL (Dbeaver/SQLite)
-- Python (pandas, numpy, matplotlib, seaborn, scikit-learn)
-- Jupyter Notebook
 - Git/GitHub
 - Data source: https://www.kaggle.com/datasets/karkavelrajaj/amazon-sales-dataset/data
 
