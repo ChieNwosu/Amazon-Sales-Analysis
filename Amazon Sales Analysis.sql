@@ -2,10 +2,6 @@
 -- Overview of Dataset --
 -- The data consists of sales record of over 1K+ Amazon Product's Ratings and Reviews --
 -- as per their details listed on the official website of Amazon --
-
--- Objective of Project --
--- The major aim of this project is to gain insight into the sales data of Amazon --
--- and to understand the different factors that affect sales of the different  --
 -------------------------------------------------------------------------------------------------------
 
 -- Data Wrangling--
@@ -231,34 +227,4 @@ WHERE
     AND discounted_price > avg_price_cte.avg_price;
     -- Only includes products priced higher than the overall average
 
--------------------------------------------------------------------------------------------------------
-
--- This project presents a comprehensive analysis of Amazon sales data using SQL queries --
--- The analysis extracts key findings about product performance, store operations, customer behavior, and sales patterns. --
-
--- ##### Key Findings ##### --
-
--- ##### Product Analysis ##### --
--- Category with Most Products: Electronics (Based on product count) --
--- Highest Average Price Category: Computers (Based on discounted_price) --
--- Category with Highest Average Rating: Books (4.7/5.0) --
--- Category with Highest Discount: Fashion (35.2% average discount) --
-
--- ##### Sales Analysis ##### --
--- Month With Highest Revenue: January ($9.2M) --
--- Branch With Highest Revenue: Branch A ($12.5M) --
--- Month With Lowest Revenue: February ($7.5M) --
--- Branch With Lowest Revenue: Branch B ($9.8M) --
--- Peak Sales Time: Afternoon (5,100 units) --
--- Peak Sales Day: Saturday (2,700 units) --
-
--- ##### Customer Analysis ##### --
--- Most Predominant Gender: Female (52%) --
--- Most Predominant Customer Type: Member (57%) --
--- Highest Revenue Gender: Female ($17.5M) --
--- Highest Revenue Customer Type: Member ($18.5M) --
--- Most Popular Category (Male): Electronics (35%) --
--- Most Popular Category (Female): Fashion (40%) --
--- Distribution Of Members: Male (48%) Female (52%) --
--- Sales by Gender: Male (2,641 units) Female (2,869 units) --
 -------------------------------------------------------------------------------------------------------
