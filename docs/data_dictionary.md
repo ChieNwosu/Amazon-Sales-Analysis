@@ -35,7 +35,7 @@ This document defines all 16 columns in the `amazon.csv` dataset. It is intended
 The following columns have known data quality considerations that are worth understanding before drawing conclusions from the analysis.
 
 ### `product_id` — Uniqueness Assumption
-This column is expected to hold one unique value per product. If duplicate `product_id` values exist in the dataset, it would indicate a data integrity issue — for example, the same product appearing more than once with different review data attached. This column was not used in the SQL analysis but would be the first place to check in any data quality audit.
+This column is expected to hold one unique value per product. If duplicate `product_id` values exist in the dataset, it would indicate a data integrity issue. For example, the same product appearing more than once with different review data attached. This column was not used in the SQL analysis but would be the first place to check in any data quality audit.
 
 ### `category` — Non-Normalized Hierarchy
 Category values are stored as a full hierarchy string using pipe (`|`) as a separator — for example, `Electronics|Headphones|WiredHeadphones`. The entire string is treated as a single label in this analysis. This means grouping by category groups on the full path, not on individual levels. If the same product appears under slightly different category strings (e.g., a trailing space or a different capitalization), it will be counted as a separate category. This limits grouping accuracy and is a known limitation of the dataset.
