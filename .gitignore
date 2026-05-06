@@ -23,8 +23,12 @@
 # Logs and databases #
 ######################
 *.log
-*.sql
+# *.sql
 *.sqlite
+
+# Kiro spec files #
+###################
+.kiro/
 
 # OS generated files #
 ######################
