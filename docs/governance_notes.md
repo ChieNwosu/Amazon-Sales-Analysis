@@ -1,6 +1,6 @@
 # Data Governance Relevance
 
-This document explains how the Amazon Sales Analysis project demonstrates skills relevant to a Data Governance Intern role. The project is not a production analytics system — it is a structured documentation exercise that applies data governance thinking to a real-world dataset.
+This document explains how the Amazon Sales Analysis project demonstrates skills relevant to a Data Governance Analyst role. The project is not a production analytics system but a structured documentation exercise that applies data governance thinking to a real-world dataset.
 
 ---
 
@@ -35,7 +35,7 @@ Each query's governance note identifies at least one data quality consideration 
 - **Outlier risk** — Query 4 notes that discount percentages above 80–90% may indicate data entry errors worth investigating.
 - **Category normalization** — Queries 2, 3, 4, 5, 6, and 8 all note that the `category` column stores a full pipe-delimited hierarchy string, which limits grouping accuracy and can produce unexpected results if category strings are inconsistently formatted.
 
-This kind of proactive data quality documentation — identifying risks before they cause analytical errors — is a core responsibility of data governance and data stewardship roles.
+This kind of proactive data quality documentation, like identifying risks before they cause analytical errors for example, is a core responsibility of data governance and data stewardship roles.
 
 ---
 
@@ -50,7 +50,7 @@ README.md (business question list)
       → docs/query_interpretations.md (output structure and interpretation guidance)
 ```
 
-This end-to-end traceability — from a business question through to the SQL logic and its interpretation — reflects the kind of lineage documentation that data governance frameworks (such as DAMA-DMBOK) emphasize as essential for data asset management.
+This end-to-end traceability from a business question to the SQL logic and its interpretation reflects the kind of lineage documentation that data governance frameworks (such as DAMA-DMBOK) emphasize as essential for data asset management.
 
 ---
 
@@ -70,10 +70,10 @@ Transparent documentation of limitations is a data governance best practice. It 
 
 ## 7. Reusable Documentation Structure
 
-The documentation structure used in this project — business questions, data dictionary, query interpretations, limitations, and governance notes — is designed to be reusable. The same pattern could be applied to any SQL analysis project, making it a transferable template for data governance documentation work.
+The documentation structure used in this project such as the business questions, data dictionary, query interpretations, limitations, and governance notes, is designed to be reusable. The same pattern could be applied to any SQL analysis project, making it a transferable template for data governance documentation work.
 
-This demonstrates an understanding that good data governance is not just about individual datasets — it is about establishing repeatable, scalable documentation practices that make data assets more trustworthy and accessible across an organization.
+This demonstrates an understanding that good data governance is not just about individual datasets but also about establishing repeatable, scalable documentation practices that make data assets more trustworthy and accessible across an organization.
 
 ---
 
-*This project was developed as a portfolio piece for a Data Governance Intern application. It demonstrates SQL reasoning, metadata documentation, data quality awareness, and stakeholder-friendly communication — without overstating the scope or capabilities of the underlying dataset.*
+*This project was developed as a portfolio piece for a show case of data governance and SQL querying in a business context. It demonstrates SQL reasoning, metadata documentation, data quality awareness, and stakeholder-friendly communication without overstating the scope or capabilities of the underlying dataset.*
