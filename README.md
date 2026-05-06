@@ -97,7 +97,7 @@ The queries follow a deliberate progression from broad to specific:
 
 The analysis surfaces several patterns across the Amazon India product catalog:
 
-- Product distribution across categories is uneven — a small number of categories account for a disproportionate share of listings.
+- Product distribution across categories is uneven and a small number of categories account for a disproportionate share of listings.
 - Customer ratings vary by category, making it possible to identify which product lines consistently earn high marks and which fall below average satisfaction levels.
 - Discount behavior differs significantly across categories, reflecting different competitive or promotional strategies.
 - Comparing average price and average rating side by side shows that price tier does not uniformly predict customer satisfaction.
@@ -111,7 +111,7 @@ These findings are descriptive and exploratory. They are drawn from a static ~1,
 
 ## Data Governance Relevance
 
-This project is structured to reflect the kind of work expected in a Data Governance Intern role:
+This project is structured to reflect the kind of work expected in a Data Governance Analyst role:
 
 - **Metadata documentation** — every query is annotated with business purpose, columns used, expected output, and data quality notes, mirroring the documentation maintained in data catalogs and query registries
 - **Business definitions** — `docs/business_questions.md` and `docs/data_dictionary.md` establish a shared vocabulary, ensuring that terms like "high-value deal" and "price tier" are defined explicitly before being encoded in query logic
