@@ -6,7 +6,7 @@ This document provides an honest account of the constraints and boundaries of th
 
 ## 1. Static Dataset — Not Real-Time Amazon Data
 
-The dataset used in this project is a static snapshot sourced from Kaggle. It reflects Amazon product listings, prices, ratings, and reviews as they existed at the time the snapshot was captured — not as they exist today. Prices, discount percentages, ratings, and product availability change continuously on Amazon. No conclusions drawn from this analysis should be treated as current or up-to-date.
+The dataset used in this project is a static snapshot sourced from Kaggle. It reflects Amazon product listings, prices, ratings, and reviews as they existed at the time the snapshot was captured and not as they exist today. Prices, discount percentages, ratings, and product availability change continuously on Amazon. No conclusions drawn from this analysis should be treated as current or up-to-date.
 
 ## 2. Practice-Focused Scope
 
@@ -30,4 +30,4 @@ The dataset contains approximately 1,400 product records. While this is sufficie
 
 ---
 
-*This document is part of a Data Governance Intern portfolio project. The goal is accurate, transparent documentation — not overstating what the dataset can support.*
+*This document is part of a Data Governance Analyst portfolio project. The goal is accurate and transparent documentation*
