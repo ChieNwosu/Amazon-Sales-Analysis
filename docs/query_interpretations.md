@@ -23,7 +23,7 @@ No screenshots or local database setup are required to understand this documenta
 | `avg_discount` | The average discount percentage applied across all products |
 
 **How to interpret the result:**
-This query returns a single summary row covering the full scope of the dataset. It is the starting point for any analysis — confirming how many products are included, how many distinct categories exist, what the average customer rating is, the price range, and the typical discount applied. If `avg_rating` falls outside the 0–5 range or `total_products` seems unexpectedly low, it may indicate an import or data quality issue worth investigating before proceeding.
+This query returns a single summary row covering the full scope of the dataset. It is the starting point for any analysis, along with confirming how many products are included, how many distinct categories exist, what the average customer rating is, the price range, and the typical discount applied. If `avg_rating` falls outside the 0–5 range or `total_products` seems unexpectedly low, it may indicate an import or data quality issue worth investigating before proceeding.
 
 ---
 
@@ -39,7 +39,7 @@ This query returns a single summary row covering the full scope of the dataset. 
 | `avg_rating` | The average customer rating for products in that category, rounded to 2 decimal places |
 
 **How to interpret the result:**
-This query returns one row per category, sorted from highest to lowest average rating. Categories at the top of the list are consistently well-reviewed by customers. Categories near the bottom may have quality issues, unmet customer expectations, or a small number of reviews skewing the average. Because the `category` column stores a full hierarchy string (e.g., `Electronics|Headphones|WiredHeadphones`), each unique string is treated as a separate category — minor naming variations will produce separate rows.
+This query returns one row per category, sorted from highest to lowest average rating. Categories at the top of the list are consistently well-reviewed by customers. Categories near the bottom may have quality issues, unmet customer expectations, or a small number of reviews skewing the average. Because the `category` column stores a full hierarchy string (e.g., `Electronics|Headphones|WiredHeadphones`), each unique string is treated as a separate category and minor naming variations will produce separate rows.
 
 ---
 
@@ -55,7 +55,7 @@ This query returns one row per category, sorted from highest to lowest average r
 | `num_products` | The number of products listed in that category |
 
 **How to interpret the result:**
-This query returns one row per category, sorted from most to fewest products. It reveals which categories dominate the catalog and which are underrepresented. A heavily skewed distribution — where a few categories hold most of the products — can signal sourcing focus, data collection bias, or gaps in catalog coverage. If any rows appear with a blank or NULL category, that is a data quality signal worth flagging.
+This query returns one row per category, sorted from most to fewest products. It reveals which categories dominate the catalog and which are underrepresented. A heavily skewed distribution, like where a few categories hold most of the products, can signal sourcing focus, data collection bias, or gaps in catalog coverage. If any rows appear with a blank or NULL category, that is a data quality signal worth flagging.
 
 ---
 
@@ -71,7 +71,7 @@ This query returns one row per category, sorted from most to fewest products. It
 | `avg_discount_percent` | The average discount percentage for products in that category, rounded to 2 decimal places |
 
 **How to interpret the result:**
-This query returns one row per category, sorted from highest to lowest average discount. Categories at the top are where sellers are cutting prices the most on average. This can reflect competitive pressure, inventory clearance strategies, or promotional behavior. Categories with average discounts above 80–90% may contain outliers or data entry errors worth investigating — discount percentages should logically fall between 0 and 100.
+This query returns one row per category, sorted from highest to lowest average discount. Categories at the top are where sellers are cutting prices the most on average. This can reflect competitive pressure, inventory clearance strategies, or promotional behavior. Categories with average discounts above 80–90% may contain outliers or data entry errors worth investigating. Discount percentages should logically fall between 0 and 100.
 
 ---
 
@@ -88,7 +88,7 @@ This query returns one row per category, sorted from highest to lowest average d
 | `avg_rating` | The average customer rating for products in that category |
 
 **How to interpret the result:**
-This query returns one row per category, sorted from highest to lowest average price. It places pricing and satisfaction side by side, allowing a direct comparison. The results can reveal whether higher-priced categories also earn higher ratings — or whether budget categories quietly outperform on customer experience. All prices are in Indian Rupees (₹) and reflect the Amazon India marketplace only.
+This query returns one row per category, sorted from highest to lowest average price. It places pricing and satisfaction side by side, allowing a direct comparison. The results can reveal whether higher-priced categories also earn higher ratings, or whether budget categories quietly outperform on customer experience. All prices are in Indian Rupees (₹) and reflect the Amazon India marketplace only.
 
 ---
 
@@ -105,7 +105,7 @@ This query returns one row per category, sorted from highest to lowest average p
 | `category_percentage` | That category's share of the total product catalog, as a percentage |
 
 **How to interpret the result:**
-This query returns one row per category, sorted from highest to lowest percentage. It adds proportional context to the raw counts from Query 3 — knowing a category holds 200 products is more meaningful when you also know that represents 15% of the entire catalog. All percentages should sum to approximately 100%. This view helps identify catalog concentration and potential over-reliance on a few categories.
+This query returns one row per category, sorted from highest to lowest percentage. It adds proportional context to the raw counts from Query 3: knowing a category holds 200 products is more meaningful when you also know that represents 15% of the entire catalog. All percentages should sum to approximately 100%. This view helps identify catalog concentration and potential over-reliance on a few categories.
 
 ---
 
@@ -157,7 +157,7 @@ This query returns one row per category, sorted from most to fewest top-rated pr
 | `avg_rating_per_tier` | The average customer rating for products in that tier |
 
 **How to interpret the result:**
-This query returns up to four rows — one per tier, plus an "Unknown" row if any products have NULL prices despite the WHERE filter. Results are sorted by product count. The output reveals how the catalog is distributed across price points and whether average ratings differ meaningfully between tiers. The tier boundaries (₹1,000 and ₹3,000) are specific to the Amazon India marketplace and should not be applied to other markets without adjustment.
+This query returns up to four rows, one per tier, plus an "Unknown" row if any products have NULL prices despite the WHERE filter. Results are sorted by product count. The output reveals how the catalog is distributed across price points and whether average ratings differ meaningfully between tiers. The tier boundaries (₹1,000 and ₹3,000) are specific to the Amazon India marketplace and should not be applied to other markets without adjustment.
 
 ---
 
@@ -172,4 +172,4 @@ This query returns up to four rows — one per tier, plus an "Unknown" row if an
 | `avg_discount_for_expensive_products` | The average discount percentage for products priced above the catalog average |
 
 **How to interpret the result:**
-This query returns a single number — the average discount applied to products priced above the overall catalog average. It answers whether premium-priced products tend to be discounted more or less than the typical product. The query uses a Common Table Expression (CTE) to separate the average price calculation from the main filter logic, making the query easier to read and audit. Both NULL prices and NULL discounts are explicitly excluded to prevent silent data gaps from skewing the result.
+This query returns a single number, the average discount applied to products priced above the overall catalog average. It answers whether premium-priced products tend to be discounted more or less than the typical product. The query uses a Common Table Expression (CTE) to separate the average price calculation from the main filter logic, making the query easier to read and audit. Both NULL prices and NULL discounts are explicitly excluded to prevent silent data gaps from skewing the result.
